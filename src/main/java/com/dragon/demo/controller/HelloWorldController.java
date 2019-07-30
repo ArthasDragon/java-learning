@@ -1,4 +1,4 @@
-package com.dragon.demo.web;
+package com.dragon.demo.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
