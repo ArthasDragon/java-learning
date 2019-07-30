@@ -1,5 +1,7 @@
 package com.dragon.demo.web;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,10 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by bysocket on 16/4/26.
  */
 @RestController
+@PropertySource(value = "classpath:dragon.properties")
 public class HelloWorldController {
+
+    @Value("${dragon.test}")
+    private String dragon;
 
     @RequestMapping("/aaa")
     public String sayHello() {
-        return "Hello,World!aaa";
+        return dragon;
     }
 }
