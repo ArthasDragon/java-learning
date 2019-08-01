@@ -14,8 +14,8 @@ public class UserService {
     @Transactional(rollbackOn = Exception.class)
     public User save(User user){
         userRepository.save(user);
-        int aa = 1 / 0;
-        user.setPassword("123456");
+//        int aa = 1 / 0;
+        user.setPassword("123456789");
         return userRepository.save(user);
     }
 }
