@@ -1,10 +1,10 @@
-package com.dragon.demo.jdbc;
+package com.dragon.demo.multiDataSource.first;
 
 import javax.persistence.*;
 
-@Table(name = "user")
+@Table(name = "user_one")
 @Entity
-public class User {
+public class UserOne {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
