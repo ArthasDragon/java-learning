@@ -1,6 +1,7 @@
 package com.dragonshop.controller;
 
 import com.dragonshop.controller.viewobject.UserVO;
+import com.dragonshop.response.CommonReturnType;
 import com.dragonshop.service.UserService;
 import com.dragonshop.service.model.UserModel;
 import org.apache.catalina.User;
@@ -20,12 +21,15 @@ public class UserController {
 
     @RequestMapping("/get")
     @ResponseBody
-    public UserVO getUser(@RequestParam(name = "id") Integer id){
+    public CommonReturnType getUser(@RequestParam(name = "id") Integer id){
         //调用service服务获取对应id的用户对象并返回给前端
         UserModel userModel = userService.getUserById(id);
 
         //将核心领域模型对象转化为可供前端使用的viewobject
-        return convertFromModel(userModel);
+        UserVO userVO = convertFromModel(userModel);
+
+        //返回通用对象
+        return CommonReturnType.create(userVO);
     }
 
     private UserVO convertFromModel(UserModel userModel){
