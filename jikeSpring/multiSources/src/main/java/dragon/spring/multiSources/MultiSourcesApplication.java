@@ -23,6 +23,7 @@ public class MultiSourcesApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception{
 		showConnection();
+		showData();
 	}
 
 	private void showConnection() throws SQLException{
@@ -30,5 +31,9 @@ public class MultiSourcesApplication implements CommandLineRunner {
 		Connection conn = dataSource.getConnection();
 		log.info(conn.toString());
 		conn.close();
+	}
+
+	private void showData(){
+		
 	}
 }
