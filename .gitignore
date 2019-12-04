@@ -29,3 +29,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Frontend ###
+dist
+.history
+node_modules
