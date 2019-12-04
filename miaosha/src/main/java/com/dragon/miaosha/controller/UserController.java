@@ -7,7 +7,6 @@ import com.dragon.miaosha.error.EmBusinessError;
 import com.dragon.miaosha.response.CommonReturnType;
 import com.dragon.miaosha.service.UserService;
 import com.dragon.miaosha.service.model.UserModel;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +29,21 @@ public class UserController extends BaseController {
     @Autowired
     HttpServletRequest httpServletRequest;
 
+    // 用户登录接口
+    @RequestMapping(value = "/login", method = {RequestMethod.POST})
+    @ResponseBody
+    public CommonReturnType login(@RequestParam(name = "telphone") String telphone,
+                                  @RequestParam(name = "password") String password
+    ) throws BusinessException {
+        // 入参校验
+        if(StringUtils.isEmpty(telphone) || StringUtils.isEmpty(password)){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        //用户登录服务，用来校验用户登录是否合法
+    }
+
+
     //用户注册接口
     @RequestMapping(value = "/register", method = {RequestMethod.POST})
     @ResponseBody
@@ -42,8 +56,8 @@ public class UserController extends BaseController {
 
         //验证手机号和对应的otpCode相符合
         String inSessionOtpCode = (String) httpServletRequest.getSession().getAttribute(telphone);
-        if(!StringUtils.equals(inSessionOtpCode,otpCode)){
-            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"短信验证码不符合");
+        if (!StringUtils.equals(inSessionOtpCode, otpCode)) {
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "短信验证码不符合");
         }
 
         //用户的注册流程
