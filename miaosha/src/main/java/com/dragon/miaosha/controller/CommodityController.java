@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller("commodity")
 @RequestMapping("/commodity")
@@ -44,6 +46,33 @@ public class CommodityController extends BaseController {
         CommodityVO commodityVO = convertVOFromModel(returnModel);
 
         return CommonReturnType.create(commodityVO);
+    }
+
+    // 商品详情页浏览
+    @RequestMapping(value = "/get", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType getCommodity(@RequestParam(name = "id")Integer id){
+
+        CommodityModel commodityModel = commodityService.getCommodityById(id);
+
+        CommodityVO commodityVO = convertVOFromModel(commodityModel);
+
+        return CommonReturnType.create(commodityVO);
+    }
+
+    // 商品列表页面浏览
+    @RequestMapping(value = "/list", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType listCommodity(){
+        List<CommodityModel> commodityModelList = commodityService.listCommodity();
+
+        // 使用streamapi将list内的model转为vo
+        List<CommodityVO> commodityVOList = commodityModelList.stream().map(commodityModel -> {
+            CommodityVO commodityVO = convertVOFromModel(commodityModel);
+            return commodityVO;
+        }).collect(Collectors.toList());
+
+        return CommonReturnType.create(commodityVOList);
     }
 
     private CommodityVO convertVOFromModel(CommodityModel commodityModel) {

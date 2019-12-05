@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommodityServiceImpl implements CommodityService {
@@ -92,7 +93,13 @@ public class CommodityServiceImpl implements CommodityService {
 
     @Override
     public List<CommodityModel> listCommodity() {
-        return null;
+        List<CommodityDO> commodityDOList = commodityDOMapper.listCommodity();
+        List<CommodityModel> commodityModelList = commodityDOList.stream().map(commodityDO -> {
+            CommodityStockDO commodityStockDO = commodityStockDOMapper.selectByCommodityId(commodityDO.getId());
+            CommodityModel commodityModel = convertModelFromDataObject(commodityDO, commodityStockDO);
+            return commodityModel;
+        }).collect(Collectors.toList());
+        return commodityModelList;
     }
 
     @Override

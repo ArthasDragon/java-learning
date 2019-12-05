@@ -3,6 +3,8 @@ package com.dragon.miaosha.dao;
 import com.dragon.miaosha.dataobject.CommodityDO;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component(value = "CommodityDOMapper")
 public interface CommodityDOMapper {
     /**
@@ -52,4 +54,6 @@ public interface CommodityDOMapper {
      * @mbg.generated Thu Dec 05 14:38:00 CST 2019
      */
     int updateByPrimaryKey(CommodityDO record);
+
+    List<CommodityDO> listCommodity ();
 }
