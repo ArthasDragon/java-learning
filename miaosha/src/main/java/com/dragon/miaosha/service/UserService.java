@@ -11,5 +11,9 @@ public interface UserService {
     void register(UserModel userModel) throws BusinessException;
 
     // 登录验证
-    void validateLogin(String telphone, String password);
+    /**
+     * telphone:用户手机
+     * password:用户加密后的密码
+     * */
+    UserModel validateLogin(String telphone, String encrptPassword) throws BusinessException;
 }

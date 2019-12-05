@@ -8,6 +8,8 @@ import com.dragon.miaosha.error.BusinessException;
 import com.dragon.miaosha.error.EmBusinessError;
 import com.dragon.miaosha.service.UserService;
 import com.dragon.miaosha.service.model.UserModel;
+import com.dragon.miaosha.validator.ValidationResult;
+import com.dragon.miaosha.validator.ValidatorImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserPasswordDOMapper userPasswordDOMapper;
+
+    @Autowired
+    private ValidatorImpl validator;
 
     @Override
     public UserModel getUserById(Integer id) {
@@ -44,11 +49,17 @@ public class UserServiceImpl implements UserService {
         if (userModel == null) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-        if (StringUtils.isEmpty(userModel.getName())
-                || userModel.getAge() == null
-                || userModel.getGender() == null
-        || StringUtils.isEmpty(userModel.getTelphone())){
-            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+//        if (StringUtils.isEmpty(userModel.getName())
+//                || userModel.getAge() == null
+//                || userModel.getGender() == null
+//        || StringUtils.isEmpty(userModel.getTelphone())){
+//            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+//        }
+
+        ValidationResult validationResult = validator.validate(userModel);
+
+        if(validationResult.isHasErrors()){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, validationResult.getErrMsg());
         }
 
         UserDO userDO = convertFromModel(userModel);
@@ -62,6 +73,27 @@ public class UserServiceImpl implements UserService {
 
         UserPasswordDO userPasswordDO = convertPasswordFromModel(userModel);
         userPasswordDOMapper.insertSelective(userPasswordDO);
+    }
+
+    @Override
+    public UserModel validateLogin(String telphone, String encrptPassword) throws BusinessException {
+        // 通过用户手机获取用户信息
+        UserDO userDO = userDOMapper.selectByTelphone(telphone);
+
+        if(userDO == null){
+            throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
+        }
+
+        UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByUserId(userDO.getId());
+
+        UserModel userModel = convertFromDataObject(userDO, userPasswordDO);
+
+        // 比较密码是否匹配
+        if (!StringUtils.equals(encrptPassword,userModel.getEncrptPassword())){
+            throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
+        }
+
+        return userModel;
     }
 
     //model -> passwordDo
