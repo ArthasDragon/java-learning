@@ -46,12 +46,12 @@ public class CommodityController extends BaseController {
         return CommonReturnType.create(commodityVO);
     }
 
-    private CommodityVO convertVOFromModel(CommodityModel commodityModel){
-        if(commodityModel == null){
+    private CommodityVO convertVOFromModel(CommodityModel commodityModel) {
+        if (commodityModel == null) {
             return null;
         }
         CommodityVO commodityVO = new CommodityVO();
-        BeanUtils.copyProperties(commodityModel,commodityVO);
+        BeanUtils.copyProperties(commodityModel, commodityVO);
         return commodityVO;
     }
 }

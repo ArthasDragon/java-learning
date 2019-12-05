@@ -18,18 +18,18 @@ public class BaseController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Object handlerException(HttpServletRequest request, Exception ex){
-        Map<String,Object> responseData = new HashMap<>();
+    public Object handlerException(HttpServletRequest request, Exception ex) {
+        Map<String, Object> responseData = new HashMap<>();
 
-        if(ex instanceof BusinessException){
-            BusinessException businessException = (BusinessException)ex;
+        if (ex instanceof BusinessException) {
+            BusinessException businessException = (BusinessException) ex;
 
-            responseData.put("errCode",businessException.getErrCode());
-            responseData.put("errMsg",businessException.getErrMsg());
-        }else {
+            responseData.put("errCode", businessException.getErrCode());
+            responseData.put("errMsg", businessException.getErrMsg());
+        } else {
             responseData.put("errCode", EmBusinessError.UNKOWN_ERROR.getErrCode());
-            responseData.put("errMsg",EmBusinessError.UNKOWN_ERROR.getErrMsg());
+            responseData.put("errMsg", EmBusinessError.UNKOWN_ERROR.getErrMsg());
         }
-        return CommonReturnType.create(responseData,"fail");
+        return CommonReturnType.create(responseData, "fail");
     }
 }

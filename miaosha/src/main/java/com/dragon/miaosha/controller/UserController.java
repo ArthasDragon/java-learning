@@ -36,15 +36,15 @@ public class UserController extends BaseController {
                                   @RequestParam(name = "password") String password
     ) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         // 入参校验
-        if(StringUtils.isEmpty(telphone) || StringUtils.isEmpty(password)){
+        if (StringUtils.isEmpty(telphone) || StringUtils.isEmpty(password)) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
 
         //用户登录服务，用来校验用户登录是否合法
-        UserModel userModel = userService.validateLogin(telphone,this.EncodeByMd5(password));
+        UserModel userModel = userService.validateLogin(telphone, this.EncodeByMd5(password));
 
         // 将登陆凭证加入到用户登录成功的session内
-        httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
+        httpServletRequest.getSession().setAttribute("IS_LOGIN", true);
         httpServletRequest.getSession().setAttribute("LOGIN_USER", userModel);
 
         return CommonReturnType.create(null);
