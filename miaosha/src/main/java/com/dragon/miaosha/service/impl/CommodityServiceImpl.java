@@ -31,8 +31,8 @@ public class CommodityServiceImpl implements CommodityService {
     @Autowired
     private CommodityStockDOMapper commodityStockDOMapper;
 
-    private CommodityDO convertCommodityDOFromCommodityModel(CommodityModel commodityModel){
-        if(commodityModel == null){
+    private CommodityDO convertCommodityDOFromCommodityModel(CommodityModel commodityModel) {
+        if (commodityModel == null) {
             return null;
         }
         CommodityDO commodityDO = new CommodityDO();
@@ -42,8 +42,8 @@ public class CommodityServiceImpl implements CommodityService {
         return commodityDO;
     }
 
-    private CommodityStockDO convertCommodityStockDOFromCommodityModel(CommodityModel commodityModel){
-        if(commodityModel == null){
+    private CommodityStockDO convertCommodityStockDOFromCommodityModel(CommodityModel commodityModel) {
+        if (commodityModel == null) {
             return null;
         }
 
@@ -55,7 +55,7 @@ public class CommodityServiceImpl implements CommodityService {
         return commodityStockDO;
     }
 
-    private CommodityModel convertModelFromDataObject(CommodityDO commodityDO, CommodityStockDO commodityStockDO){
+    private CommodityModel convertModelFromDataObject(CommodityDO commodityDO, CommodityStockDO commodityStockDO) {
         CommodityModel commodityModel = new CommodityModel();
 
         BeanUtils.copyProperties(commodityDO, commodityModel);
@@ -72,7 +72,7 @@ public class CommodityServiceImpl implements CommodityService {
         // 校验入参逻辑
         ValidationResult validationResult = validator.validate(commodityModel);
 
-        if(validationResult.isHasErrors()){
+        if (validationResult.isHasErrors()) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, validationResult.getErrMsg());
         }
 
@@ -106,7 +106,7 @@ public class CommodityServiceImpl implements CommodityService {
     public CommodityModel getCommodityById(Integer id) {
         CommodityDO commodityDO = commodityDOMapper.selectByPrimaryKey(id);
 
-        if(commodityDO == null){
+        if (commodityDO == null) {
             return null;
         }
 
@@ -114,8 +114,19 @@ public class CommodityServiceImpl implements CommodityService {
         CommodityStockDO commodityStockDO = commodityStockDOMapper.selectByCommodityId(commodityDO.getId());
 
         // dataobject 转化成model
-        CommodityModel commodityModel = convertModelFromDataObject(commodityDO,commodityStockDO);
+        CommodityModel commodityModel = convertModelFromDataObject(commodityDO, commodityStockDO);
 
         return commodityModel;
+    }
+
+    @Override
+    @Transactional
+    public boolean decreaseStock(Integer commodityId, Integer amount) throws BusinessException {
+        int affectedRow = commodityStockDOMapper.decreaseStock(commodityId, amount);
+        if (affectedRow > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

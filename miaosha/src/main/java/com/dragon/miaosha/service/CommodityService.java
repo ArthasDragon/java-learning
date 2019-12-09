@@ -16,4 +16,7 @@ public interface CommodityService {
     // 商品详情浏览
     CommodityModel getCommodityById(Integer id);
 
+    // 库存扣减
+    boolean decreaseStock(Integer commodityId, Integer amount) throws BusinessException;
+
 }

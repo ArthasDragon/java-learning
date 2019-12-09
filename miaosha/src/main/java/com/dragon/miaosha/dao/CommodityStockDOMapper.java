@@ -1,6 +1,7 @@
 package com.dragon.miaosha.dao;
 
 import com.dragon.miaosha.dataobject.CommodityStockDO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 @Component(value = "CommodityStockDOMapper")
@@ -53,4 +54,6 @@ public interface CommodityStockDOMapper {
      * @mbg.generated Thu Dec 05 14:38:00 CST 2019
      */
     int updateByPrimaryKey(CommodityStockDO record);
+
+    int decreaseStock(@Param("commodityId")Integer commodityId, @Param("amount") Integer amount);
 }
