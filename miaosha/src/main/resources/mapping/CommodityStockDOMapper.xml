@@ -114,7 +114,7 @@
 
   <update id="decreaseStock">
     update commodity_stock
-    set stock = stock - ${amount,jdbcType=INTEGER}
-    where commodity_id = #{commodityId,jdbcType=INTEGER} and stock >= ${amount,jdbcType=INTEGER}
+    set stock = stock - #{amount,jdbcType=INTEGER}
+    where commodity_id = #{commodityId,jdbcType=INTEGER} and stock >= #{amount,jdbcType=INTEGER}
   </update>
 </mapper>
