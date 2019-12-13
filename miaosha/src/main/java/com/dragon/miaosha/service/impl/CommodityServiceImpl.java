@@ -129,4 +129,10 @@ public class CommodityServiceImpl implements CommodityService {
             return false;
         }
     }
+
+    @Override
+    @Transactional
+    public void increaseSales(Integer commodityId, Integer amount) throws BusinessException {
+        commodityDOMapper.increaseSales(commodityId, amount);
+    }
 }

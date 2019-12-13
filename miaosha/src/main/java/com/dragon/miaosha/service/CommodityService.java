@@ -19,4 +19,7 @@ public interface CommodityService {
     // 库存扣减
     boolean decreaseStock(Integer commodityId, Integer amount) throws BusinessException;
 
+    //商品销量增加
+    void increaseSales(Integer commodityId, Integer amount)throws BusinessException;
+
 }

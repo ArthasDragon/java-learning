@@ -1,6 +1,7 @@
 package com.dragon.miaosha.dao;
 
 import com.dragon.miaosha.dataobject.CommodityDO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -55,5 +56,7 @@ public interface CommodityDOMapper {
      */
     int updateByPrimaryKey(CommodityDO record);
 
-    List<CommodityDO> listCommodity ();
+    int increaseSales(@Param("commodityId") Integer commodity, @Param("amount") Integer amount);
+
+    List<CommodityDO> listCommodity();
 }
