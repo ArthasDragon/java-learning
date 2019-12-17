@@ -1,5 +1,7 @@
 package com.dragon.miaosha.controller.viewobject;
 
+import org.joda.time.DateTime;
+
 import java.math.BigDecimal;
 
 public class CommodityVO {
@@ -22,6 +24,18 @@ public class CommodityVO {
 
     // 商品描述图片的url
     private String imgUrl;
+
+    // 记录商品是否在秒杀活动中以及对应状态 0 - 没有秒杀活动  1 - 待抢购  2 - 抢购中
+    private Integer promoStatus;
+
+    // 秒杀活动价格
+    private BigDecimal promoPrice;
+
+    // 秒杀活动开始时间
+    private DateTime startDate;
+
+    // 秒杀活动Id
+    private Integer promoId;
 
     public Integer getId() {
         return id;
@@ -77,5 +91,37 @@ public class CommodityVO {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public Integer getPromoStatus() {
+        return promoStatus;
+    }
+
+    public void setPromoStatus(Integer promoStatus) {
+        this.promoStatus = promoStatus;
+    }
+
+    public BigDecimal getPromoPrice() {
+        return promoPrice;
+    }
+
+    public void setPromoPrice(BigDecimal promoPrice) {
+        this.promoPrice = promoPrice;
+    }
+
+    public DateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(DateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public Integer getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
     }
 }

@@ -8,6 +8,7 @@ import com.dragon.miaosha.error.BusinessException;
 import com.dragon.miaosha.error.EmBusinessError;
 import com.dragon.miaosha.service.CommodityService;
 import com.dragon.miaosha.service.model.CommodityModel;
+import com.dragon.miaosha.service.model.PromoModel;
 import com.dragon.miaosha.validator.ValidationResult;
 import com.dragon.miaosha.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +31,9 @@ public class CommodityServiceImpl implements CommodityService {
 
     @Autowired
     private CommodityStockDOMapper commodityStockDOMapper;
+
+    @Autowired
+    private PromoServiceImpl promoService;
 
     private CommodityDO convertCommodityDOFromCommodityModel(CommodityModel commodityModel) {
         if (commodityModel == null) {
@@ -62,6 +66,12 @@ public class CommodityServiceImpl implements CommodityService {
 
         commodityModel.setPrice(new BigDecimal(commodityDO.getPrice()));
         commodityModel.setStock(commodityStockDO.getStock());
+
+        // 获取活动商品信息
+        PromoModel promoModel = promoService.getPromoByCommodityId(commodityModel.getId());
+        if(promoModel != null && promoModel.getStatus().intValue() != 3){
+            commodityModel.setPromoModel(promoModel);
+        }
 
         return commodityModel;
     }

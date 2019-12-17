@@ -5,6 +5,7 @@ import com.dragon.miaosha.error.BusinessException;
 import com.dragon.miaosha.response.CommonReturnType;
 import com.dragon.miaosha.service.impl.CommodityServiceImpl;
 import com.dragon.miaosha.service.model.CommodityModel;
+import com.dragon.miaosha.service.model.PromoModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,7 @@ public class CommodityController extends BaseController {
     // 商品详情页浏览
     @RequestMapping(value = "/get", method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType getCommodity(@RequestParam(name = "id")Integer id){
+    public CommonReturnType getCommodity(@RequestParam(name = "id") Integer id) {
 
         CommodityModel commodityModel = commodityService.getCommodityById(id);
 
@@ -63,7 +64,7 @@ public class CommodityController extends BaseController {
     // 商品列表页面浏览
     @RequestMapping(value = "/list", method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType listCommodity(){
+    public CommonReturnType listCommodity() {
         List<CommodityModel> commodityModelList = commodityService.listCommodity();
 
         // 使用streamapi将list内的model转为vo
@@ -81,6 +82,18 @@ public class CommodityController extends BaseController {
         }
         CommodityVO commodityVO = new CommodityVO();
         BeanUtils.copyProperties(commodityModel, commodityVO);
+
+        if(commodityModel.getPromoModel() != null){
+            PromoModel promoModel = commodityModel.getPromoModel();
+            // 有正在进行或即将进行的秒杀活动
+            commodityVO.setPromoStatus(promoModel.getStatus());
+            commodityVO.setPromoId(promoModel.getId());
+            commodityVO.setStartDate(promoModel.getStartDate());
+            commodityVO.setPromoPrice(promoModel.getPromoCommodityPrice());
+        }else {
+            commodityVO.setPromoStatus(0);
+        }
+
         return commodityVO;
     }
 }

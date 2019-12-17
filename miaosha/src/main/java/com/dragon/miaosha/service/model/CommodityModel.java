@@ -32,6 +32,9 @@ public class CommodityModel {
     @NotBlank(message = "图片信息必填")
     private String imgUrl;
 
+    // 使用聚合模型，如果promoModel不为空，则表示其拥有还未结束的秒杀活动
+    private PromoModel promoModel;
+
     public Integer getId() {
         return id;
     }
@@ -86,5 +89,13 @@ public class CommodityModel {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public PromoModel getPromoModel() {
+        return promoModel;
+    }
+
+    public void setPromoModel(PromoModel promoModel) {
+        this.promoModel = promoModel;
     }
 }
