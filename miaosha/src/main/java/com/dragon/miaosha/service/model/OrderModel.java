@@ -14,7 +14,10 @@ public class OrderModel {
     // 商品id
     private Integer commodityId;
 
-    // 购买商品的单价
+    // 若非空，表示已秒杀商品方式下单
+    private Integer promoId;
+
+    // 购买商品的单价，promoId非空表示秒杀商品价格
     private BigDecimal commodityPrice;
 
     // 购买数量
@@ -69,5 +72,13 @@ public class OrderModel {
 
     public void setCommodityPrice(BigDecimal commodityPrice) {
         this.commodityPrice = commodityPrice;
+    }
+
+    public Integer getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
     }
 }

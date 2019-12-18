@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderModel createOrder(Integer userId, Integer commodityId, Integer amount) throws BusinessException {
+    public OrderModel createOrder(Integer userId, Integer commodityId, Integer promoId, Integer amount) throws BusinessException {
         // 校验下单状态,商品是否存在，用户是否合法，数量是否正确
         CommodityModel commodityModel = commodityService.getCommodityById(commodityId);
         if (commodityModel == null) {
@@ -53,6 +53,17 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "数量信息不正确");
         }
 
+        // 校验活动信息
+        if (promoId != null) {
+            if (promoId.intValue() != commodityModel.getPromoModel().getId()) {
+                // 校验该活动是否存在此商品
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "活动信息不正确");
+            } else if (commodityModel.getPromoModel().getStatus() != 2) {
+                // 活动是否在进行中
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "活动不在进行中");
+            }
+        }
+
         // 落单减库存，支付减库存
         boolean result = commodityService.decreaseStock(commodityId, amount);
         if (!result) {
@@ -64,8 +75,13 @@ public class OrderServiceImpl implements OrderService {
         orderModel.setUserId(userId);
         orderModel.setCommodityId(commodityId);
         orderModel.setAmount(amount);
-        orderModel.setCommodityPrice(commodityModel.getPrice());
-        orderModel.setOrderPrice(commodityModel.getPrice().multiply(new BigDecimal(amount)));
+        if (promoId != null) {
+            orderModel.setCommodityPrice(commodityModel.getPromoModel().getPromoCommodityPrice());
+        } else {
+            orderModel.setCommodityPrice(commodityModel.getPrice());
+        }
+        orderModel.setPromoId(promoId);
+        orderModel.setOrderPrice(orderModel.getCommodityPrice().multiply(new BigDecimal(amount)));
 
         // 生成交易流水号，订单号
         orderModel.setId(generateOrderNo());
@@ -73,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
         orderDOMapper.insertSelective(orderDO);
 
         // 加上商品的销量
-        commodityService.increaseSales(commodityId,amount);
+        commodityService.increaseSales(commodityId, amount);
 
         // 返回前端
         return orderModel;

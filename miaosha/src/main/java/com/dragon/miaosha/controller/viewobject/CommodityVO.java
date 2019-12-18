@@ -32,7 +32,7 @@ public class CommodityVO {
     private BigDecimal promoPrice;
 
     // 秒杀活动开始时间
-    private DateTime startDate;
+    private String startDate;
 
     // 秒杀活动Id
     private Integer promoId;
@@ -109,11 +109,11 @@ public class CommodityVO {
         this.promoPrice = promoPrice;
     }
 
-    public DateTime getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DateTime startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 

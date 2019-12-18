@@ -6,6 +6,7 @@ import com.dragon.miaosha.response.CommonReturnType;
 import com.dragon.miaosha.service.impl.CommodityServiceImpl;
 import com.dragon.miaosha.service.model.CommodityModel;
 import com.dragon.miaosha.service.model.PromoModel;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -88,7 +89,7 @@ public class CommodityController extends BaseController {
             // 有正在进行或即将进行的秒杀活动
             commodityVO.setPromoStatus(promoModel.getStatus());
             commodityVO.setPromoId(promoModel.getId());
-            commodityVO.setStartDate(promoModel.getStartDate());
+            commodityVO.setStartDate(promoModel.getStartDate().toString(DateTimeFormat.forPattern("yyyy-mm-dd hh:mm:ss")));
             commodityVO.setPromoPrice(promoModel.getPromoCommodityPrice());
         }else {
             commodityVO.setPromoStatus(0);
