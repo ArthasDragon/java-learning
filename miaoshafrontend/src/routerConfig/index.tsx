@@ -9,10 +9,12 @@ export default [
     routes: [
       {
         path: '/bus',
+        name: 'bus',
         component: Bus,
       },
       {
         path: '/miaosha',
+        name: 'miaosha',
         component: Miaosha,
       },
     ],
