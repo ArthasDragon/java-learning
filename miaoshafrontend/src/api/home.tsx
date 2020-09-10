@@ -1,3 +1,3 @@
 import http from '@http';
 
-export const getOtp = http.post('/user/getotp', { bodyType: 'form' });
+export const getOtp = http.form('/user/getotp', { bodyType: 'form' });
